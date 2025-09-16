@@ -1,7 +1,10 @@
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
 
 const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl
 const supabaseKey = Constants.expoConfig?.extra?.supabaseKey
-const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+// Export auth functions
+export * from './auth';

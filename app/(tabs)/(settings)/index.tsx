@@ -1,8 +1,8 @@
-import { signOut } from "@/libs/redux/slices/authSlice/thunks";
+import { userSignOut } from "@/libs/redux/slices/authSlice/thunks";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/store/hooks";
 import { router } from "expo-router";
 import { useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
 
@@ -10,7 +10,7 @@ export default function SettingsScreen() {
     const auth = useAppSelector((state) => state.auth);
 
     const handleSignOut =()=> {
-        dispatch(signOut())
+        dispatch(userSignOut())
     }
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             {auth.user && (
                 <>
-                    <Text>{auth.user.name}</Text>
+                    <Text>{auth.user.metadata?.name}</Text>
                     <Text>{auth.user.email}</Text>
                 </>
             )}

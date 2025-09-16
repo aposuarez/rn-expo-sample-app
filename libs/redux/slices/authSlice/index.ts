@@ -1,21 +1,23 @@
 // ExpoSampleApp/store/authSlice.ts
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signIn, signOut } from './thunks';
-import { initialState } from './thunks';
+import { createSlice } from '@reduxjs/toolkit';
+import { initialState, userSignIn, userSignOut } from './thunks';
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(signIn.fulfilled, (state, action) => {
+    builder.addCase(userSignIn.fulfilled, (state, action) => {
+        if (action.payload) {
+            state.isSignedIn = action.payload.isSignedIn;
+            state.user = action.payload.user;
+        }
+    });
+    builder.addCase(userSignOut.fulfilled, (state, action) => {
         state.isSignedIn = action.payload.isSignedIn;
         state.user = action.payload.user;
     });
-    builder.addCase(signOut.fulfilled, (state, action) => {
-        state.isSignedIn = action.payload.isSignedIn;
-        state.user = action.payload.user;
-    });
+   
   },
 });
 

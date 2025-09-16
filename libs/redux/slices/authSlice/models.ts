@@ -1,6 +1,8 @@
+import { AuthUser } from "@/libs/supabase/auth/models"
+
 export type AuthState = { 
     isSignedIn: boolean,
-    user: User | null
+    user: AuthUser | null
 }
 
 export type SignInParams = {
@@ -8,7 +10,10 @@ export type SignInParams = {
     password: string
 } 
 
-export interface User {
-    name: string,
-    email: string
-}
+export type SignUpParams = {
+    email: string,
+    password: string,
+    metadata: {
+        name: string
+    }
+} 

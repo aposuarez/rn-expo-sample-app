@@ -1,10 +1,11 @@
 // ExpoSampleApp/app/(auth)/registration/index.tsx
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView } from 'react-native';
+import { userSignIn } from '@/libs/redux/slices/authSlice/thunks';
 import { useAppDispatch, useAppSelector } from '@/libs/redux/store/hooks';
+import { signUp } from '@/libs/supabase';
 import { router } from 'expo-router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './_styles';
-import { signIn } from '@/libs/redux/slices/authSlice/thunks';
 
 export default function RegistrationScreen() {
 
@@ -31,11 +32,28 @@ export default function RegistrationScreen() {
         
         setIsLoading(true);
         try {
-            // For now, we'll use the same signIn logic
-            // In a real app, you'd have a separate registration API
-            await dispatch(signIn({ email, password }));
+          const { user, error } = await signUp({
+            email: email,
+            password: password,
+            metadata: { name: name }
+          });
+
+          // Handle the response
+          if (error) {
+            // Show error message to user
+            alert(`Registration failed: ${error.message}`);
+            console.error('Registration error:', error);
+            return;
+          }
+
+          if (user) {
+            console.log('User registered successfully:', user);
+            dispatch(userSignIn({ email, password }));
+          }
+
         } catch (error) {
             console.error('Registration failed:', error);
+            alert('An unexpected error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }
